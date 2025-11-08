@@ -1,19 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- State Management ---
+
     let state = {
         currentUser: null,
         users: JSON.parse(localStorage.getItem('alloc_users_v2')) || [],
         subjects: JSON.parse(localStorage.getItem('alloc_subjects_v2')) || [],
-        /**
-         * NEW Allocation Structure:
-         * { id, studentEmail, studentName, subjectCode, subjectName, status }
-         * status: 'pending', 'approved', 'rejected'
-         */
+        
         allocations: JSON.parse(localStorage.getItem('alloc_allocations_v2')) || []
     };
 
-    // --- Utility Functions ---
+  
     function saveToLocalStorage(key, data) {
         localStorage.setItem(`alloc_${key}_v2`, JSON.stringify(data));
     }
@@ -75,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // --- Authentication Logic ---
+
     const authContainer = document.getElementById('auth-container');
     const appContainer = document.getElementById('app-container');
     const loginForm = document.getElementById('login-form');
@@ -146,12 +142,11 @@ document.addEventListener("DOMContentLoaded", () => {
         hideAllAuthErrors();
     });
 
-
-    // --- Main Application UI ---
+]
     const appNav = document.getElementById('app-nav');
     const userDisplay = document.getElementById('user-display');
     
-    // Admin nav links with icons
+
     const adminNav = `
         <ul>
             <li><a href="#" class="nav-link" data-view="view-admin-dashboard"><svg class="icon"><use href="#icon-dashboard"></use></svg>Dashboard</a></li>
@@ -161,8 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <li><a href="#" class="nav-link" data-view="view-admin-report"><svg class="icon"><use href="#icon-report"></use></svg>Full Report</a></li>
         </ul>
     `;
-    
-    // Student nav links with icons
+  
     const studentNav = `
         <ul>
             <li><a href="#" class="nav-link" data-view="view-student-dashboard"><svg class="icon"><use href="#icon-dashboard"></use></svg>Dashboard</a></li>
@@ -182,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('welcome-admin').innerText = `Welcome, ${name}!`;
             showView('view-admin-dashboard');
             updateActiveNav('view-admin-dashboard');
-            // Load all admin data
+     
             renderAdminDashboard();
             renderManageSubjectsList();
             renderPendingRequestsList();
@@ -194,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('welcome-student').innerText = `Welcome, ${name}!`;
             showView('view-student-dashboard');
             updateActiveNav('view-student-dashboard');
-            // Load all student data
+          
             renderStudentDashboard();
             renderAllSubjectsList();
             renderMyAllocationsList();
@@ -285,8 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 saveToLocalStorage('subjects', state.subjects);
                 saveToLocalStorage('allocations', state.allocations);
-                
-                // Refresh all admin views
+               
                 renderManageSubjectsList();
                 renderAllocationReport();
                 renderPendingRequestsList();
@@ -300,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- Admin: Edit Subject Modal ---
+  
     const editModal = document.getElementById('edit-subject-modal');
     const editForm = document.getElementById('edit-subject-form');
     const closeModalButton = editModal.querySelector('.close-button');
@@ -350,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 state.allocations.forEach(alloc => {
                     if (alloc.subjectCode === originalCode) {
                         alloc.subjectCode = code;
-                        alloc.subjectName = name; // Update name too
+                        alloc.subjectName = name;
                     }
                 });
                 saveToLocalStorage('allocations', state.allocations);
@@ -363,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- Admin: Allocation Requests (NEW) ---
+  
     const pendingRequestsList = document.getElementById('pending-requests-list');
 
     function renderPendingRequestsList() {
@@ -410,24 +403,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         saveToLocalStorage('allocations', state.allocations);
-        renderPendingRequestsList(); // Refresh this list
-        renderAdminDashboard(); // Update stats
-        renderAllocationReport(); // Update main report
-    });
+        renderPendingRequestsList(); 
+        renderAdminDashboard(); 
+        renderAllocationReport();     });
 
-    // --- Admin: Manual Allocation (NEW) ---
+    
     const manualStudentSelect = document.getElementById('manual-student-select');
     const manualSubjectSelect = document.getElementById('manual-subject-select');
     const manualAllocationForm = document.getElementById('manual-allocation-form');
 
     function populateManualAllocationDropdowns() {
-        // Populate students
+     
         manualStudentSelect.innerHTML = '<option value="">-- Choose a student --</option>';
         state.users.filter(u => u.role === 'student').forEach(student => {
             manualStudentSelect.innerHTML += `<option value="${student.email}">${student.name} (${student.email})</option>`;
         });
 
-        // Populate subjects
+     
         manualSubjectSelect.innerHTML = '<option value="">-- Choose a subject --</option>';
         state.subjects.forEach(subject => {
             manualSubjectSelect.innerHTML += `<option value="${subject.code}">${subject.name} (${subject.code})</option>`;
@@ -444,7 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Check if this allocation already exists
+      
         const existing = state.allocations.find(a => a.studentEmail === studentEmail && a.subjectCode === subjectCode);
         
         if (existing) {
@@ -455,7 +447,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const student = state.users.find(u => u.email === studentEmail);
         const subject = state.subjects.find(s => s.code === subjectCode);
 
-        // Create new, 'approved' allocation
         const newAllocation = {
             id: generateId(),
             studentEmail: student.email,
@@ -469,11 +460,11 @@ document.addEventListener("DOMContentLoaded", () => {
         saveToLocalStorage('allocations', state.allocations);
         
         showTemporaryMessage('manual-alloc-error', 'Allocation created successfully!', false);
-        renderAllocationReport(); // Refresh report
+        renderAllocationReport(); 
         manualAllocationForm.reset();
     });
 
-    // --- Admin: Allocation Report ---
+    
     const reportContainer = document.getElementById('report-container');
 
     function renderAllocationReport() {
@@ -517,7 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Student Dashboard ---
+  
     function renderStudentDashboard() {
         const myAllocs = state.allocations.filter(a => a.studentEmail === state.currentUser.email);
         document.getElementById('student-stat-approved').innerText = myAllocs.filter(a => a.status === 'approved').length;
@@ -525,7 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('student-stat-rejected').innerText = myAllocs.filter(a => a.status === 'rejected').length;
     }
 
-    // --- Student: All Subjects (Request) ---
+
     const allSubjectsList = document.getElementById('all-subjects-list');
     
     function renderAllSubjectsList() {
@@ -590,14 +581,14 @@ document.addEventListener("DOMContentLoaded", () => {
             state.allocations.push(newRequest);
             saveToLocalStorage('allocations', state.allocations);
             
-            // Refresh student views
+      
             renderAllSubjectsList();
             renderMyAllocationsList();
             renderStudentDashboard();
         }
     });
 
-    // --- Student: My Allocations ---
+    
     const myAllocationsList = document.getElementById('my-allocations-list');
     
     function renderMyAllocationsList() {
@@ -656,13 +647,12 @@ document.addEventListener("DOMContentLoaded", () => {
         
         saveToLocalStorage('allocations', state.allocations);
         
-        // Refresh all student views
         renderMyAllocationsList();
         renderAllSubjectsList();
         renderStudentDashboard();
     });
     
-    // --- Student: Profile ---
+   
     function renderProfile() {
         if (!state.currentUser) return;
         document.getElementById('profile-name').innerText = state.currentUser.name;
@@ -670,7 +660,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('profile-role').innerText = state.currentUser.role;
     }
 
-    // --- Initial Application Load ---
     function checkSession() {
         const user = loadFromSessionStorage();
         if (user) {

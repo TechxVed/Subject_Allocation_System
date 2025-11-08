@@ -1,9 +1,10 @@
 
-    /* --- Global Styles & Variables --- */
+
+
     :root {
-        --primary-color: #4A90E2; /* A strong, modern blue */
+        --primary-color: #4A90E2;
         --primary-dark: #357ABD;
-        --secondary-color: #50E3C2; /* A vibrant mint/cyan */
+        --secondary-color: #50E3C2; 
         --text-dark: #333;
         --text-light: #777;
         --bg-light: #F8F9FA;
@@ -12,9 +13,9 @@
         --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
         
-        --status-pending: #FFA500; /* Orange */
-        --status-approved: #28a745; /* Green */
-        --status-rejected: #dc3545; /* Red */
+        --status-pending: #FFA500; 
+        --status-approved: #28a745;
+        --status-rejected: #dc3545;
     }
 
     * {
@@ -49,16 +50,15 @@
         top: -2px;
     }
 
-    /* --- 1. Authentication Page --- */
     #auth-container {
         display: flex;
-        flex-direction: column; /* Changed for footer */
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        /* Attractive gradient background */
+        
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        padding: 2rem; /* Added padding */
+        padding: 2rem;
     }
 
     .auth-box {
